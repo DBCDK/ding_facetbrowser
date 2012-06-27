@@ -78,6 +78,15 @@ function ding_facetbrowser_settings($form_state) {
   );
   $i++;
 
+  //pjo 270612 set number of facets - previously hardcoded
+  $form['ding_facetbrowser_number_shown'] = array(
+    '#type'=>'textfield',
+    '#size'=>8,
+    '#weight'=>-100,
+    '#title' => t('Number of facets'),
+    '#description' => t('Number of facets shown in each group'),
+    '#default_value'=>variable_get('ding_facetbrowser_number_shown',25),
+  );
 
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array(
@@ -100,6 +109,11 @@ function ding_facetbrowser_settings_submit($form, &$form_state) {
   }
   usort($facets, 'drupal_sort_weight');
   variable_set('ding_facetbrowser_facets', $facets);
+
+  //pjo 270612 set number of facets
+  $number_of_facets = $form_state['values']['ding_facetbrowser_number_shown'];
+  variable_set('ding_facetbrowser_number_shown', $number_of_facets);
+
   drupal_set_message(t('The configuration options have been saved.'));
 }
 
