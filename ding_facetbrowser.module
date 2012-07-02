@@ -36,6 +36,26 @@ function ding_facetbrowser_menu() {
     'type' => MENU_CALLBACK,
   );
 
+// pjo also on openformat
+$items['admin/config/openformat/facets'] = array(
+    'title' => 'Ting facets',
+    'description' => 'Configure facets.',
+    'weight' => -20,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ding_facetbrowser_settings'),
+    'access arguments' => array('administer ting settings'),
+    'file' => 'ding_facetbrowser.admin.inc',
+  );
+
+  $items['admin/config/openformat/facets/%/delete'] = array(
+    'title' => 'Delete facets',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ding_facetbrowser_delete_facet', 4),
+    'access arguments' => array('administer ting settings'),
+    'file' => 'ding_facetbrowser.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
