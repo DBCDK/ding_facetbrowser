@@ -26,6 +26,16 @@ function ding_facetbrowser_menu() {
     'access arguments' => array('administer ting settings'),
     'file' => 'ding_facetbrowser.admin.inc',
   );
+  // also add to ting_openformat
+  $items['admin/config/ting_openformat/facets']=array(
+    'title' => 'Ting facets',
+    'description' => 'Configure facets.',
+    'weight' => -20,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ding_facetbrowser_settings'),
+    'access arguments' => array('administer ting settings'),
+    'file' => 'ding_facetbrowser.admin.inc',
+  );
 
   $items['admin/config/ting/facets/%/delete'] = array(
     'title' => 'Delete facets',
@@ -37,7 +47,7 @@ function ding_facetbrowser_menu() {
   );
 
 // pjo also on openformat
-$items['admin/config/openformat/facets'] = array(
+$items['admin/config/ting_openformat/facets'] = array(
     'title' => 'Ting facets',
     'description' => 'Configure facets.',
     'weight' => -20,
