@@ -26,7 +26,7 @@
           }
         });
         if (!facetGroup.find('#expand_more').length) {
-          facetGroup.append('<span class="expand" id="expand_more">' + Drupal.t('Vis flere') + '</span>');
+          facetGroup.append('<span class="expand" id="expand_more"><span class="icon icon-left icon-blue-plus">+</span>' + Drupal.t('Vis flere') + '</span>');
         }
       }
     });
@@ -39,7 +39,7 @@
         if (clickedKey.id == 'expand_more' && count < Drupal.settings.dingFacetBrowser.showCount) {
           $(facetElement).slideDown('fast', function() {
             if (facetGroup.find('.form-type-checkbox:visible').size() >= Drupal.settings.dingFacetBrowser.showCount && facetGroup.find('#expand_less').size() === 0 && count % Drupal.settings.dingFacetBrowser.showCount === 0) {
-              facetGroup.find('#expand_more').after('<span class="expand" id="expand_less">' + Drupal.t('Luk') + '</span>');
+              facetGroup.find('#expand_more').after('<span class="expand" id="expand_less"><span class="icon icon-left icon-blue-minus">-</span>' + Drupal.t('Luk') + '</span>');
             }
           });
         }
@@ -53,15 +53,15 @@
         }
       });
 
-	if( (facetGroup.find('.form-type-checkbox:visible').size() >= facetGroup.attr('count')) && (clickedKey.id == 'expand_more') ) {
-	    facetGroup.find('#expand_more').remove();	    
-	}
-	
-	if( clickedKey.id == 'expand_less' ){
-	    if( !(facetGroup.find('#expand_more').length) ) {	
-		facetGroup.append('<span class="expand" id="expand_more">' + Drupal.t('Vis flere') + '</span>');
-	    }
-	}
+  if( (facetGroup.find('.form-type-checkbox:visible').size() >= facetGroup.attr('count')) && (clickedKey.id == 'expand_more') ) {
+      facetGroup.find('#expand_more').remove();
+  }
+
+  if( clickedKey.id == 'expand_less' ){
+      if( !(facetGroup.find('#expand_more').length) ) {
+    facetGroup.append('<span class="expand" id="expand_more">' + Drupal.t('Vis flere') + '</span>');
+      }
+  }
     });
 };
 
