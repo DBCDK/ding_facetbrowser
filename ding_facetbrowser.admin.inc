@@ -114,7 +114,7 @@ function ding_facetbrowser_settings_submit($form, &$form_state) {
   $number_of_facets = $form_state['values']['ding_facetbrowser_number_shown'];
   variable_set('ding_facetbrowser_number_shown', $number_of_facets);
 
-  drupal_set_message(t('The configuration options have been saved.'));
+  drupal_set_message(t('The configuration options have been saved.', array(), array('context' => 'ding_facetbrowser')));
 }
 
 /**
@@ -170,6 +170,6 @@ function ding_facetbrowser_delete_facet_submit($form, &$form_state) {
     }
   }
   variable_set('ding_facetbrowser_facets', $facets);
-  drupal_set_message(t('@facet deleted.', array('@facet' => $form_state['values']['facet_id'])));
+  drupal_set_message(t('@facet deleted.', array('@facet' => $form_state['values']['facet_id'], array('context' => 'ding_facetbrowser'))));
   $form_state['redirect'] = 'admin/config/ting/facets';
 }
