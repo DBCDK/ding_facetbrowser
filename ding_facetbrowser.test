@@ -54,16 +54,10 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    $this->profile = 'minimal';
-
-    parent::setUp('ting', 'ding_facetbrowser', 'search', 'ting_search');
-    variable_set('ting_agency', '100200');
-    variable_set('ting_search_url', 'http://opensearch.addi.dk/next_2.0/');
-    variable_set('ting_scan_url', 'http://openscan.addi.dk/1.7/');
-    variable_set('ting_spell_url', 'http://openspell.addi.dk/1.2/');
-    variable_set('ting_recommendation_url', 'http://openadhl.addi.dk/1.1/');
-    variable_set('search_active_modules', array('node' => 'node', 'ting_search' => 'ting_search'));
-    variable_set('search_default_module', 'ting_search');
+    parent::setUp('ding_facetbrowser', 'ting_openformat');
+    variable_set('ting_search_url', 'lakiseks.dbc.dk/openbibdk/0.5/');
+    variable_set('search_active_modules', array('node' => 'node', 'ting_openformat' => 'ting_openformat'));
+    variable_set('search_default_module', 'ting_openformat');
 
     // Set up some facets for testing.
     variable_set('ding_facetbrowser_facets', array(
@@ -145,10 +139,10 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
     $this->assertNoText('Harry rocks', 'Search for "Harry rocks" in drupal - failed');
     $this->assertText('Harry potter rocks', 'Search for "Harry potter rocks" in drupal - complete');
 
-    $this->drupalGet('search/ting/harry');
+    $this->drupalGet('search/work/harry');
     $this->assertNoText('Da pensionisten Harry Browns gamle', 'Search for title from external search service NOT found');
     $this->assertNoText('Harry potter rocks', "We're not seeing the node.");
-    $this->assertText('Harry Blotter', "'Harry Blotter' found.");
+    $this->assertText('harry warren', "'Harry warren' found.");
 
     // Check if the facetbrowser has any content
 
