@@ -147,7 +147,15 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
           $facet_name             = explode('.', $facet->name);
           $element_name           = end($facet_name);
           $facets_string = $facet->name . ':' . $term_name;
-          $term_name_title = $term_name;
+                    
+          // only translate material type
+          if ($element_name == 'type') {
+            $term_name_title = t($term_name, array(), array('context' => 'material_type'));
+          }
+          else {
+            $term_name_title = $term_name;
+          }
+          
           // Check if term name is longer than 14 chars,
           // if so, short it down to fit facetbrowser
           $substr_length = 19
