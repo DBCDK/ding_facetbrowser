@@ -18,3 +18,9 @@ function ding_facetbrowser_requirements($phase) {
   return $requirements;
 }
 
+
+function ding_facetbrowser_update_7001(&$sandbox) {
+  variable_set('ding_facetbrowser_number_shown', 5);
+  variable_set('ding_facetbrowser_number_requested', 25);
+}
+
