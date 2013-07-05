@@ -307,6 +307,7 @@ function theme_facetbrowser($search_result = FALSE) {
  * Implements hook_block_view()
  *
  * @return Array
+ * See also: ding_facetbrowser ctools content_type
  */
 function ding_facetbrowser_block_view($delta = FALSE) {
   $block                  = array();

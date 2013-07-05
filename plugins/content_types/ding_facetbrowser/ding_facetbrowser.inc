@@ -22,12 +22,14 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
   $block->module = 'ding_facetbrowser';
   $block->delta  = 'ding_facetbrowser';
 
+  $showCount = variable_get('ding_facetbrowser_number_shown', 5);
+
   drupal_add_css(drupal_get_path('module', 'ding_facetbrowser') . '/css/facetbrowser.css');
   drupal_add_js(drupal_get_path('module', 'ding_facetbrowser') . '/js/facetbrowser.js');
   drupal_add_js(
     array('dingFacetBrowser' => array(
       'mainElement' => '.pane-ding-facetbrowser',
-      'showCount' => 5)
+      'showCount' => $showCount)
     ), 'setting');
 
   // Invoke ding_facetbrowser() from executed search module
