@@ -348,7 +348,7 @@ function ding_facetbrowser_block_view($delta = FALSE) {
     }
     switch ($delta) {
     case 'facetbrowser':
-      $block['subject'] = t('Facet browser');
+      $block['subject'] = t('Facet browser',array(),array('context'=>'ding_facetbrowser'));
       $block['content'] = $block_content;
       break;
     }
