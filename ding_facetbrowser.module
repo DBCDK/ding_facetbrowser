@@ -243,6 +243,11 @@ function _isFacetSet($term_cat, $term_name) {
  * @return String
  */
 function _parseRequestUri() {
+  // pjo 070813 .. this method fucks up
+  // the request string 
+  // just return the request
+  return request_uri();
+  
   $new_query_part = array();
   if (stristr(request_uri(), '?')) {
     $request_uri_parts = explode('?', request_uri());
