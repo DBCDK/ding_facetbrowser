@@ -246,8 +246,7 @@ function _parseRequestUri() {
   $new_query_part = array();
   if (stristr(request_uri(), '?')) {
     $request_uri_parts = explode('?', request_uri());
-
-    $query = rawurldecode(end($request_uri_parts));
+    $query = end($request_uri_parts);
     $query_parts = explode('&', $query);
     foreach ($query_parts as $key => $part) {
       if (preg_match('/^page\=/', $part)) {
