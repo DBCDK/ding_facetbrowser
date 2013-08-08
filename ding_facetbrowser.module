@@ -112,6 +112,8 @@ function ding_facetbrowser_ctools_plugin_api($module, $api) {
     return array('version' => 1);
   }
 }
+
+
 /**
  * Create a custom form with checkbox elements for facets and ajax callback
  *
@@ -127,6 +129,7 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
   $default_values     = array();
   $selected = array();
   $not_selected = array();
+  $fragment = '#content';
 
   $form['search_key'] = array(
     '#type'  => 'hidden',
@@ -144,9 +147,9 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
         );
 
         foreach ($facet->terms as $term_name => $term_count) {
-          $facet_name             = explode('.', $facet->name);
-          $element_name           = end($facet_name);
-          $facets_string = $facet->name . ':' . $term_name;
+          $facet_name     = explode('.', $facet->name);
+          $element_name   = end($facet_name);
+          $facets_string  = $facet->name . ':' . $term_name;
 
           // only translate material type
           if ($element_name == 'type') {
@@ -170,26 +173,34 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
             $default_values[] = $term_name;
             $facets_string = '-' . $facets_string;
 
-            $selected[$term_name] = l($term_name_title . ' <span class="count">(' . $term_count . ' ' . _ding_facetbrowser_hits_label($term_count) . ')</span>',  $base_root . _parseRequestUri(), array(
-              'html' => TRUE,
-              'query' => array(
-                'facets' => array('' => $facets_string),
-              ),
-              'attributes' => array(
-                'title' => $term_name,
-              ),
-            ));
+            $selected[$term_name] = l(
+              $term_name_title . ' <span class="count">(' . $term_count . ' ' . _ding_facetbrowser_hits_label($term_count) . ')</span>',
+              $base_root . _parseRequestUri() . $fragment,
+              array(
+                'html' => TRUE,
+                'query' => array(
+                  'facets' => array('' => $facets_string),
+                ),
+                'attributes' => array(
+                  'title' => $term_name,
+                ),
+              )
+            );
           }
           else {
-            $not_selected[$term_name] = l($term_name_title . ' <span class="count">(' . $term_count . ' ' . _ding_facetbrowser_hits_label($term_count) . ')</span>',  $base_root . _parseRequestUri(), array(
-              'html' => TRUE,
-              'query' => array(
-                'facets' => array('' => $facets_string),
-              ),
-              'attributes' => array(
-                'title' => $term_name,
-              ),
-            ));
+            $not_selected[$term_name] = l(
+              $term_name_title . ' <span class="count">(' . $term_count . ' ' . _ding_facetbrowser_hits_label($term_count) . ')</span>',
+              $base_root . _parseRequestUri() . $fragment,
+              array(
+                'html' => TRUE,
+                'query' => array(
+                  'facets' => array('' => $facets_string),
+                ),
+                'attributes' => array(
+                  'title' => $term_name,
+                ),
+              )
+            );
           }
 
           $form[$facet->name][$element_name] = array(
@@ -347,7 +358,7 @@ function ding_facetbrowser_block_view($delta = FALSE) {
     }
     switch ($delta) {
     case 'facetbrowser':
-      $block['subject'] = t('Facet browser');
+      $block['subject'] = t('Facet browser',array(),array('context'=>'ding_facetbrowser'));
       $block['content'] = $block_content;
       break;
     }

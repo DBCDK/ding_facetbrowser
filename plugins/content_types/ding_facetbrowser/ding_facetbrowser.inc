@@ -1,8 +1,8 @@
 <?php
 
 $plugin = array(
-  'title' => t('Ding Facetbrowser'),
-  'description' => t('Ding facetbrowser description'),
+  'title' => t('Ding Facetbrowser', array(), array('context' => 'ding_facetbrowser')),
+  'description' => t('Ding facetbrowser description', array(), array('context' => 'ding_facetbrowser')),
   'single' => TRUE,
   'content_types' => array('ding_facetbrowser'),
   'render callback' => 'ding_facetbrowser_content_type_render',
@@ -46,11 +46,11 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
           break;
         }
       }
-      if ($content_in_facet === TRUE || $results->show_empty == TRUE) {
+      if ( $content_in_facet === TRUE || $results->show_empty == TRUE ) {
         $block_content = theme('facetbrowser', array($results->facets, (!empty($results->searchkey) ? $results->searchkey : NULL)));
       }
     }
-    $block->title = t('Ding Facetbrowser');
+    $block->title = t('Ding Facetbrowser', array(), array('context' => 'ding_facetbrowser block title'));
     $block->content = $block_content;
     return $block;
   }
