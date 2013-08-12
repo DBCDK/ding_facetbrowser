@@ -143,7 +143,11 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
         $form[$facet->name] = array(
           '#type'        => 'fieldset',
           '#title'       => t($configured_facet['title'],array(),array('context'=>'facet_titles')),
-          '#attributes'  => array('id' => str_replace('.', '-', $facet->name), 'data' => array($facet->name),'count' => count($facet->terms)),
+          '#attributes'  => array(
+            'id' => str_replace('.', '-', $facet->name),
+            'data-name' => array($facet->name),
+            'data-count' => count($facet->terms)
+          ),
         );
 
         foreach ($facet->terms as $term_name => $term_count) {

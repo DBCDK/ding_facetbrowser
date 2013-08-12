@@ -13,7 +13,7 @@
     }
   };
 
-  /**
+ /**
  * Fold facet groups to show only 5 per group.
  */
   Drupal.FoldFacetGroup = function() {
@@ -53,7 +53,7 @@
         }
       });
 
-  if( (facetGroup.find('.form-type-checkbox:visible').size() >= facetGroup.attr('count')) && (clickedKey.id == 'expand_more') ) {
+  if( (facetGroup.find('.form-type-checkbox:visible').size() >= facetGroup.attr('data-count')) && (clickedKey.id == 'expand_more') ) {
       facetGroup.find('#expand_more').remove();
   }
 
