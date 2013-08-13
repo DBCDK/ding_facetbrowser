@@ -129,7 +129,7 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
   $default_values     = array();
   $selected = array();
   $not_selected = array();
-  $fragment = '#content';
+  $fragment = 'content';
 
   $form['search_key'] = array(
     '#type'  => 'hidden',
@@ -179,12 +179,13 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
 
             $selected[$term_name] = l(
               $term_name_title . ' <span class="count">(' . $term_count . ' ' . _ding_facetbrowser_hits_label($term_count) . ')</span>',
-              $base_root . _parseRequestUri() . $fragment,
+              $base_root . _parseRequestUri(),
               array(
                 'html' => TRUE,
                 'query' => array(
                   'facets' => array('' => $facets_string),
                 ),
+                'fragment' => $fragment,
                 'attributes' => array(
                   'title' => $term_name,
                 ),
@@ -194,12 +195,13 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
           else {
             $not_selected[$term_name] = l(
               $term_name_title . ' <span class="count">(' . $term_count . ' ' . _ding_facetbrowser_hits_label($term_count) . ')</span>',
-              $base_root . _parseRequestUri() . $fragment,
+              $base_root . _parseRequestUri(),
               array(
                 'html' => TRUE,
                 'query' => array(
                   'facets' => array('' => $facets_string),
                 ),
+                'fragment' => $fragment,
                 'attributes' => array(
                   'title' => $term_name,
                 ),
