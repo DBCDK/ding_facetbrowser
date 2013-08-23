@@ -129,7 +129,7 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
   $default_values     = array();
   $selected = array();
   $not_selected = array();
-  $fragment = '#content';
+  $fragment = 'content';
 
   $form['search_key'] = array(
     '#type'  => 'hidden',
@@ -143,7 +143,11 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
         $form[$facet->name] = array(
           '#type'        => 'fieldset',
           '#title'       => t($configured_facet['title'],array(),array('context'=>'facet_titles')),
-          '#attributes'  => array('id' => str_replace('.', '-', $facet->name), 'data' => array($facet->name),'count' => count($facet->terms)),
+          '#attributes'  => array(
+            'id' => str_replace('.', '-', $facet->name),
+            'data-name' => array($facet->name),
+            'data-count' => count($facet->terms)
+          ),
         );
 
         foreach ($facet->terms as $term_name => $term_count) {
@@ -175,12 +179,13 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
 
             $selected[$term_name] = l(
               $term_name_title . ' <span class="count">(' . $term_count . ' ' . _ding_facetbrowser_hits_label($term_count) . ')</span>',
-              $base_root . _parseRequestUri() . $fragment,
+              $base_root . _parseRequestUri(),
               array(
                 'html' => TRUE,
                 'query' => array(
                   'facets' => array('' => $facets_string),
                 ),
+                'fragment' => $fragment,
                 'attributes' => array(
                   'title' => $term_name,
                 ),
@@ -190,12 +195,13 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
           else {
             $not_selected[$term_name] = l(
               $term_name_title . ' <span class="count">(' . $term_count . ' ' . _ding_facetbrowser_hits_label($term_count) . ')</span>',
-              $base_root . _parseRequestUri() . $fragment,
+              $base_root . _parseRequestUri(),
               array(
                 'html' => TRUE,
                 'query' => array(
                   'facets' => array('' => $facets_string),
                 ),
+                'fragment' => $fragment,
                 'attributes' => array(
                   'title' => $term_name,
                 ),
