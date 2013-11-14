@@ -266,7 +266,7 @@ function _parseRequestUri() {
     $query = end($request_uri_parts);
     $query_parts = explode('&', $query);
     foreach ($query_parts as $key => $part) {
-      if (preg_match('/^page\=/', $part)) {
+      if (preg_match('/^page\=/', $part) || $part == 'full_view=1') {
         unset($query_parts[$key]);
         continue;
       }
