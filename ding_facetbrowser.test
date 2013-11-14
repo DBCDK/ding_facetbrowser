@@ -55,7 +55,7 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
 
   public function setUp() {
     parent::setUp('ding_facetbrowser', 'ting_openformat');
-    variable_set('ting_search_url', 'lakiseks.dbc.dk/openbibdk/next/');
+    variable_set('ting_search_url', 'http://bibliotek.dk/openbibdk/0.8/');
     variable_set('search_active_modules', array('node' => 'node', 'ting_openformat' => 'ting_openformat'));
     variable_set('search_default_module', 'ting_openformat');
 
