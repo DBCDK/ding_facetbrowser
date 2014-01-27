@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Admin page callback file for the ting module.
+ * Admin page callback file for the ding_facetbrowser module.
  */
 
 /**
@@ -25,7 +25,7 @@ function ding_facetbrowser_settings($form_state) {
   );
 
   $i = 0;
-  foreach($facets as $facet) {
+  foreach ( $facets as $facet ) {
     $form['ding_facetbrowser_facets'][$i]['name'] = array(
       '#type' => 'textfield',
       '#title' => t('Facet id'),
@@ -79,30 +79,30 @@ function ding_facetbrowser_settings($form_state) {
   $i++;
 
   $form['ding_facetbrowser_number_shown'] = array(
-    '#type'=>'textfield',
-    '#size'=>8,
-    '#weight'=>-110,
+    '#type' => 'textfield',
+    '#size' => 8,
+    '#weight' => -110,
     '#title' => t('Number of facets shown.'),
     '#description' => t('Number of facets shown in each group initially'),
-    '#default_value'=>variable_get('ding_facetbrowser_number_shown',5),
+    '#default_value' => variable_get('ding_facetbrowser_number_shown', 5),
   );
 
   $form['ding_facetbrowser_consecutive_number_shown'] = array(
-    '#type'=>'textfield',
-    '#size'=>8,
-    '#weight'=>-105,
+    '#type' => 'textfield',
+    '#size' => 8,
+    '#weight' => -105,
     '#title' => t('Consecutive number of facets shown.'),
     '#description' => t('Number of facets shown in each group after the initial one'),
-    '#default_value'=>variable_get('ding_facetbrowser_consecutive_number_shown',10),
+    '#default_value' => variable_get('ding_facetbrowser_consecutive_number_shown', 10),
   );
 
   $form['ding_facetbrowser_number_requested'] = array(
-    '#type'=>'textfield',
-    '#size'=>8,
-    '#weight'=>-100,
+    '#type' => 'textfield',
+    '#size' => 8,
+    '#weight' => -100,
     '#title' => t('Number of facets requested from webservice.'),
     '#description' => t('Total number of facets shown in each group'),
-    '#default_value'=>variable_get('ding_facetbrowser_number_requested',25),
+    '#default_value' => variable_get('ding_facetbrowser_number_requested', 25),
   );
 
   $form['actions'] = array('#type' => 'actions');

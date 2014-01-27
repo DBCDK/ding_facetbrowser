@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * test file for the ding_facetbrowser module.
+ */
 
 class DingFacetbrowserUnit extends DrupalUnitTestCase {
 

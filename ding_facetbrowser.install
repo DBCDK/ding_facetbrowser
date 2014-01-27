@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * install file for the ding_facetbrowser module.
+ */
 
 /**
  * Implement hook_requirements():
