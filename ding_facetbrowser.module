@@ -24,7 +24,7 @@ function ding_facetbrowser_menu() {
     'weight' => -20,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_facetbrowser_settings'),
-    'access arguments' => array('administer ting settings'),
+    'access arguments' => array('administer site configuration'),
     'file' => 'ding_facetbrowser.admin.inc',
   );
   // also add to ting_openformat
@@ -34,7 +34,7 @@ function ding_facetbrowser_menu() {
     'weight' => -20,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_facetbrowser_settings'),
-    'access arguments' => array('administer ting settings'),
+    'access arguments' => array('administer site configuration'),
     'file' => 'ding_facetbrowser.admin.inc',
   );
 
@@ -42,7 +42,7 @@ function ding_facetbrowser_menu() {
     'title' => 'Delete facets',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_facetbrowser_delete_facet', 4),
-    'access arguments' => array('administer ting settings'),
+    'access arguments' => array('administer site configuration'),
     'file' => 'ding_facetbrowser.admin.inc',
     'type' => MENU_CALLBACK,
   );
@@ -54,7 +54,7 @@ function ding_facetbrowser_menu() {
     'weight' => -20,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_facetbrowser_settings'),
-    'access arguments' => array('administer ting settings'),
+    'access arguments' => array('administer site configuration'),
     'file' => 'ding_facetbrowser.admin.inc',
   );
 
@@ -62,7 +62,7 @@ function ding_facetbrowser_menu() {
     'title' => 'Delete facets',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_facetbrowser_delete_facet', 4),
-    'access arguments' => array('administer ting settings'),
+    'access arguments' => array('administer site configuration'),
     'file' => 'ding_facetbrowser.admin.inc',
     'type' => MENU_CALLBACK,
   );
