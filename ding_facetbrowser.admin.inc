@@ -78,7 +78,6 @@ function ding_facetbrowser_settings($form_state) {
   );
   $i++;
 
-  //pjo 270612 set number of facets - previously hardcoded
   $form['ding_facetbrowser_number_shown'] = array(
     '#type'=>'textfield',
     '#size'=>8,
@@ -86,6 +85,15 @@ function ding_facetbrowser_settings($form_state) {
     '#title' => t('Number of facets shown.'),
     '#description' => t('Number of facets shown in each group initially'),
     '#default_value'=>variable_get('ding_facetbrowser_number_shown',5),
+  );
+
+  $form['ding_facetbrowser_consecutive_number_shown'] = array(
+    '#type'=>'textfield',
+    '#size'=>8,
+    '#weight'=>-105,
+    '#title' => t('Consecutive number of facets shown.'),
+    '#description' => t('Number of facets shown in each group after the initial one'),
+    '#default_value'=>variable_get('ding_facetbrowser_consecutive_number_shown',10),
   );
 
   $form['ding_facetbrowser_number_requested'] = array(
@@ -119,9 +127,11 @@ function ding_facetbrowser_settings_submit($form, &$form_state) {
   usort($facets, 'drupal_sort_weight');
   variable_set('ding_facetbrowser_facets', $facets);
 
-  //pjo 270612 set number of facets
   $number_of_facets = $form_state['values']['ding_facetbrowser_number_shown'];
   variable_set('ding_facetbrowser_number_shown', $number_of_facets);
+
+  $consecutive_number_of_facets = $form_state['values']['ding_facetbrowser_consecutive_number_shown'];
+  variable_set('ding_facetbrowser_consecutive_number_shown', $consecutive_number_of_facets);
 
   $number_of_facets_requested = $form_state['values']['ding_facetbrowser_number_requested'];
   variable_set('ding_facetbrowser_number_requested', $number_of_facets_requested);
