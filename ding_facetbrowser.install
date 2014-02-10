@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * install file for the ding_facetbrowser module.
+ */
 
 /**
  * Implement hook_requirements():
@@ -24,3 +28,7 @@ function ding_facetbrowser_update_7001(&$sandbox) {
   variable_set('ding_facetbrowser_number_requested', 25);
 }
 
+
+function ding_facetbrowser_update_7002(&$sandbox) {
+  variable_set('ding_facetbrowser_consecutive_number_shown', 10);
+}

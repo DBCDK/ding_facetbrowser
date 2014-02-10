@@ -1,47 +1,8 @@
 <?php
-
-class DingFacetbrowserUnit extends DrupalUnitTestCase {
-
-  static function getInfo() {
-    return array(
-      'name' => t('Ding Facetbrowser Unit tests'),
-      'description' => t('Unit tests for the Ding Facetbrowser module'),
-      'group' => 'Ding! - Facetbrowser',
-    );
-  }
-
-  function testFacetbrowser() {
-    drupal_load('module', 'ding_facetbrowser');
-    $form       = array();
-    $form_state = array();
-    $facets     = array();
-
-    $facets['First area'] = (object) array(
-      'name'  => 'Loremipsum',
-      'terms' => array(
-        'Dolor'      => 3,
-        'Vestibulum' => 'Vestibulum',
-      ),
-    );
-    $facets['Second area'] = (object) array(
-      'name'  => 'Nullamdolor',
-      'terms' => array(
-        'Sagittis'   => 2,
-        'Adipiscing' => 3,
-        'Lobortis'   => 3,
-        'Massa'      => 'Vestibulum',
-      ),
-    );
-    $facet_form = ding_facetbrowser_form($form, $form_state, $facets);
-    $this->assertTrue(is_array($facet_form), 'Facetbrowser form is an array');
-    foreach ($facet_form as $name => $value) {
-      if ($value['#type'] != 'submit' && !empty($value[$name])) {
-        $this->assertTrue(is_array($value), $name . ' is an array and a ' . $value['#type']);
-        $this->assertTrue(is_array($value[$name]['#options']), $name . ' is a ' . $value[$name]['#type'] . ' contains ' . count($value[$name]['#options']) . ' facets');
-      }
-    }
-  }
-}
+/**
+ * @file
+ * Webtest file for the ding_facetbrowser module.
+ */
 
 class DingFacetbrowserWeb extends DrupalWebTestCase {
 
@@ -100,7 +61,7 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
     );
 
     $this->nodetype = $this->drupalCreateContentType();
-    $this->web_user = $this->drupalCreateUser(array('administer search', 'administer blocks', 'search content', 'create ' . $this->nodetype->name . ' content'));
+    $this->web_user = $this->drupalCreateUser(array('administer search', 'administer blocks', 'administer site configuration', 'search content', 'create ' . $this->nodetype->name . ' content'));
     $this->drupalLogin($this->web_user);
   }
 
@@ -145,9 +106,43 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
     $this->assertText('harry warren', "'Harry warren' found.");
 
     // Check if the facetbrowser has any content
-
     $this->assertText('!!facet.subject!!', 'Found the facet.subject fieldset in the facetbrowser');
     $this->assertFieldById('edit-subject-instrumental', 'instrumental', 'Found the \'instrumental\' facet in the facet.subject fieldset');
+
+
+    // Check if ding_facetbrowser_number_shown can be set;
+    $edit['ding_facetbrowser_number_shown'] = rand();
+    $this->drupalPost('admin/config/ting_openformat/facets', $edit, 'Save changes');
+    $this->assertFieldByName(
+      'ding_facetbrowser_number_shown',
+      $edit['ding_facetbrowser_number_shown'],
+      format_string('Number of facets shown have been set to: "@number".', array(
+        '@number' => $edit['ding_facetbrowser_number_shown']
+      ))
+    );
+
+    // Check if ding_facetbrowser_consecutive_number_shown can be set;
+    $edit['ding_facetbrowser_consecutive_number_shown'] = rand();
+    $this->drupalPost('admin/config/ting_openformat/facets', $edit, 'Save changes');
+    $this->assertFieldByName(
+      'ding_facetbrowser_consecutive_number_shown',
+      $edit['ding_facetbrowser_consecutive_number_shown'],
+      format_string('Number of consecutive facets shown have been set to: "@number".', array(
+        '@number' => $edit['ding_facetbrowser_consecutive_number_shown']
+      ))
+    );
+
+    // Check if ding_facetbrowser_number_requested can be set;
+    $edit['ding_facetbrowser_number_requested'] = rand();
+    $this->drupalPost('admin/config/ting_openformat/facets', $edit, 'Save changes');
+    $this->assertFieldByName(
+      'ding_facetbrowser_number_requested',
+      $edit['ding_facetbrowser_number_requested'],
+      format_string('Number of facets requested from webservice have been set to: "@number".', array(
+        '@number' => $edit['ding_facetbrowser_number_requested']
+      ))
+    );
+
   }
 }
 
