@@ -16,7 +16,7 @@
         var divExpand = $(this).parent();
 
         facetGroup.find('.form-type-checkbox:hidden').each(function(count, facetElement) {
-          if ( count < Drupal.settings.dingFacetBrowser.showCount ) {
+          if ( count < Drupal.settings.dingFacetBrowser.showCountConsecutive ) {
             $(facetElement).slideDown('fast', function() {});
           }
         });

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * install file for the test_facetbrowser_search module.
+ */
 
 /**
  * Implements hook_install()

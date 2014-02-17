@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * CTools content type file for the ding_facetbrowser module.
+ */
 
 $plugin = array(
   'title' => t('Ding Facetbrowser', array(), array('context' => 'ding_facetbrowser')),
@@ -22,15 +26,21 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
   $block->module = 'ding_facetbrowser';
   $block->delta  = 'ding_facetbrowser';
 
-  $showCount = variable_get('ding_facetbrowser_number_shown', 5);
+  $show_count = variable_get('ding_facetbrowser_number_shown', 5);
+  $show_count_consecutive = variable_get('ding_facetbrowser_consecutive_number_shown', 10);
 
   drupal_add_css(drupal_get_path('module', 'ding_facetbrowser') . '/css/facetbrowser.css');
   drupal_add_js(drupal_get_path('module', 'ding_facetbrowser') . '/js/facetbrowser.js');
   drupal_add_js(
-    array('dingFacetBrowser' => array(
-      'mainElement' => '.pane-ding-facetbrowser',
-      'showCount' => $showCount)
-    ), 'setting');
+    array(
+      'dingFacetBrowser' => array(
+        'mainElement' => '.pane-ding-facetbrowser',
+        'showCount' => $show_count,
+        'showCountConsecutive' => $show_count_consecutive
+      )
+    ),
+    'setting'
+  );
 
   // Invoke ding_facetbrowser() from executed search module
   $executed_search = menu_get_item();
@@ -59,6 +69,6 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
 /**
  * Returns an edit form for settings
  */
-function ding_facetbrowser_ding_facetbrowser_content_type_edit_form($form,&$form_state) {
+function ding_facetbrowser_ding_facetbrowser_content_type_edit_form($form, &$form_state) {
   return $form;
 }
