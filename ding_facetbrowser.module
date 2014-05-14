@@ -219,12 +219,6 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
   //drupal_add_css(drupal_get_path('module', 'ding_facetbrowser') . '/css/facetbrowser.css');
   //drupal_add_js(drupal_get_path('module', 'ding_facetbrowser') . '/js/facetbrowser.js');
 
-  //$path = drupal_get_path('module','ding_facetbrowser');
-  //$scriptpath = $path.'/js/facetbrowser.js';
-
-//  $form['#attached'][] = $scriptpath;
-
-
   return $form;
 }
 
@@ -266,14 +260,14 @@ function _isFacetSet($term_cat, $term_name) {
  * @return String
  */
 function _parseRequestUri() {
-  // pjo changes for ajax
-  $uri = base_path().rawurldecode($_SESSION['referrer']);
-  //$uri = base_path().$_SESSION['referrer'];
-
+  if( isset($_SESSION['latest_search']['request_uri'])){
+    $uri = $_SESSION['latest_search']['request_uri'];
+  }
+  else{
+    $uri = request_uri();
+  }
   $new_query_part = array();
-  if (stristr(request_uri(), '?')) {
-  //if(stristr($uri, '?')){
-   // $request_uri_parts = explode('?', request_uri());
+  if(stristr($uri, '?')){
     $request_uri_parts = explode('?',$uri);
     $query = end($request_uri_parts);
     $query_parts = explode('&', $query);
@@ -289,8 +283,7 @@ function _parseRequestUri() {
     return $request_uri_parts[0] . '?' . implode('&', $query);
   }
   else {
-    //return request_uri();
-    $uri;
+    return $uri;
   }
 }
 
