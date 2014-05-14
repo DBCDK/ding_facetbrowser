@@ -3,17 +3,17 @@
 
   Drupal.tingOpenformatSetFacets = function (facets) {
     if (facets.error) {
-      $('.ing_facetbrowser_facets_placeholder').prepend(facets.error);
+      $('.ding_facetbrowser_facets_placeholder').prepend(facets.error);
     }
     else {
-      $('.ing_facetbrowser_facets_placeholder').html(facets.markup);
+      $('.ding_facetbrowser_facets_placeholder').html(facets.markup);
       Drupal.facetBrowserInit();
     }
   }
 
   Drupal.tingOpenformatGetFacets = function (div) {
     var request = $.ajax({
-      url: Drupal.settings.basePath + 'bibdk_facets/ajax/facets',
+      url: Drupal.settings.basePath + 'ting_openformat/ajax/facets',
       type: 'POST',
       dataType: 'json',
       success: Drupal.tingOpenformatSetFacets
