@@ -1,9 +1,54 @@
 
 (function($) {
 
-  Drupal.behaviors.facetbrowser = {
-    attach: function(context, settings) {
-      Drupal.FoldFacetGroup();
+  Drupal.tingOpenformatSetFacets = function (facets) {
+    if (facets.error) {
+      $('.ing_facetbrowser_facets_placeholder').prepend(facets.error);
+    }
+    else {
+      $('.ing_facetbrowser_facets_placeholder').html(facets.markup);
+      Drupal.facetBrowserInit();
+    }
+  }
+
+  Drupal.tingOpenformatGetFacets = function (div) {
+    var request = $.ajax({
+      url: Drupal.settings.basePath + 'bibdk_facets/ajax/facets',
+      type: 'POST',
+      dataType: 'json',
+      success: Drupal.tingOpenformatSetFacets
+    });
+  }
+
+
+
+    Drupal.behaviors.tingOpenformatLoad = {
+      attach: function (context) {
+        var element = $('.ding_facetbrowser_facets_placeholder');
+        if(element.length == 0){
+          Drupal.facetBrowserInit();
+        }
+        else{
+        $('.ding_facetbrowser_facets_placeholder', context).ready(function (e) {
+          var div = $('.ding_facetbrowser_facets_placeholder');
+          div.html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>')
+          Drupal.tingOpenformatGetFacets(div);
+        });
+        }
+      }
+    };
+
+
+  /*  Drupal.behaviors.facetbrowser = {
+      attach: function(context, settings) {
+        Drupal.facetBrowserInit();
+      }
+    };
+  */
+
+
+  Drupal.facetBrowserInit = function () {
+     Drupal.FoldFacetGroup();
 
       // Check for click in checkbox, and execute search
       $(Drupal.settings.dingFacetBrowser.mainElement + ' .form-type-checkbox input').change(function(e) {
@@ -50,16 +95,15 @@
         }
 
       });
+  }
 
-    }
-  };
+
 
 
   /**
   * Fold facet groups to show only n per group.
   */
   Drupal.FoldFacetGroup = function() {
-
     $(Drupal.settings.dingFacetBrowser.mainElement + ' fieldset.form-wrapper').each(function() {
       // hide surplus facets, and add 'show more' element
       var facetGroup = $(this);
