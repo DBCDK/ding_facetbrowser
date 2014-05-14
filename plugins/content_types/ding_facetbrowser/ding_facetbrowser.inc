@@ -42,28 +42,58 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
     'setting'
   );
 
-  // Invoke ding_facetbrowser() from executed search module
-  $executed_search = menu_get_item();
-  if (!empty($executed_search['page_arguments'])) {
-    list($executed_search_module, ) = $executed_search['page_arguments'];
+  $by_ajax = variable_get('ding_facetbrowser_by_ajax', FALSE);
+  if($by_ajax){
+    $block->content = drupal_render(ding_facetbrowser_facetbrowser_placeholder());
   }
-  if (is_string($executed_search_module)) {
-    $results = module_invoke($executed_search_module, 'ding_facetbrowser');
-    if (is_object($results)) {
-      foreach ($results->facets as $result) {
-        if (count($result->terms) == TRUE) {
-          $content_in_facet = TRUE;
-          break;
+  else{
+    // Invoke ding_facetbrowser() from executed search module
+    $executed_search = menu_get_item();
+    if (!empty($executed_search['page_arguments'])) {
+      list($executed_search_module, ) = $executed_search['page_arguments'];
+    }
+    if (is_string($executed_search_module)) {
+      $results = module_invoke($executed_search_module, 'ding_facetbrowser');
+      if (is_object($results)) {
+        foreach ($results->facets as $result) {
+          if (count($result->terms) == TRUE) {
+            $content_in_facet = TRUE;
+            break;
+          }
+        }
+        if ( $content_in_facet === TRUE || $results->show_empty == TRUE ) {
+          $block_content = theme('facetbrowser', array($results->facets, (!empty($results->searchkey) ? $results->searchkey : NULL)));
         }
       }
-      if ( $content_in_facet === TRUE || $results->show_empty == TRUE ) {
-        $block_content = theme('facetbrowser', array($results->facets, (!empty($results->searchkey) ? $results->searchkey : NULL)));
-      }
+      $block->title = t('Ding Facetbrowser', array(), array('context' => 'ding_facetbrowser block title'));
+      $block->content = $block_content;
+
     }
-    $block->title = t('Ding Facetbrowser', array(), array('context' => 'ding_facetbrowser block title'));
-    $block->content = $block_content;
-    return $block;
   }
+  return $block;
+}
+
+/** Get a placeholder to get facets by ajax
+ * @return array
+ */
+function ding_facetbrowser_facetbrowser_placeholder(){
+  $path = drupal_get_path('module','ding_facetbrowser');
+  $jspath = $path.'/js/facetbrowser.js';
+  $js[] = $jspath;
+
+
+  $form = array(
+    'placeholder' => array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => array('ding_facetbrowser_facets_placeholder'),
+      )
+    ),
+    '#attached' => array(
+      'js' => $js,
+    ),
+  );
+  return $form;
 }
 
 /**
