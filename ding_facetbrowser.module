@@ -216,6 +216,14 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
 
   }
 
+  //drupal_add_css(drupal_get_path('module', 'ding_facetbrowser') . '/css/facetbrowser.css');
+  //drupal_add_js(drupal_get_path('module', 'ding_facetbrowser') . '/js/facetbrowser.js');
+
+  //$path = drupal_get_path('module','ding_facetbrowser');
+  //$scriptpath = $path.'/js/facetbrowser.js';
+
+//  $form['#attached'][] = $scriptpath;
+
 
   return $form;
 }
@@ -231,8 +239,15 @@ function ding_facetbrowser_form($form, &$form_state, $facets = FALSE, $search = 
 function _isFacetSet($term_cat, $term_name) {
   $facets = & drupal_static('ding_facetbrowser_facets');
   if (!isset($facets)) {
-    $new_query_part = array();
-    $request_uri_parts = explode('?', request_uri());
+    $by_ajax = variable_get('ding_facetbrowser_by_ajax', FALSE);
+    if($by_ajax){
+      $uri = base_path().$_SESSION['referrer'];
+      $request_uri_parts = explode('?', $uri);
+    }
+    else{
+      $request_uri_parts = explode('?', request_uri());
+    }
+
     $facets = explode('&', rawurldecode(end($request_uri_parts)));
     drupal_static('ding_facetbrowser_facets', $facets);
   }
@@ -251,9 +266,15 @@ function _isFacetSet($term_cat, $term_name) {
  * @return String
  */
 function _parseRequestUri() {
+  // pjo changes for ajax
+  $uri = base_path().rawurldecode($_SESSION['referrer']);
+  //$uri = base_path().$_SESSION['referrer'];
+
   $new_query_part = array();
   if (stristr(request_uri(), '?')) {
-    $request_uri_parts = explode('?', request_uri());
+  //if(stristr($uri, '?')){
+   // $request_uri_parts = explode('?', request_uri());
+    $request_uri_parts = explode('?',$uri);
     $query = end($request_uri_parts);
     $query_parts = explode('&', $query);
     foreach ($query_parts as $key => $part) {
@@ -268,7 +289,8 @@ function _parseRequestUri() {
     return $request_uri_parts[0] . '?' . implode('&', $query);
   }
   else {
-    return request_uri();
+    //return request_uri();
+    $uri;
   }
 }
 
@@ -307,10 +329,12 @@ function theme_facetbrowser($search_result = FALSE) {
   $elements = array();
   if (is_array($all_facets)) {
     $form = drupal_get_form('ding_facetbrowser_form', $all_facets, $searchkey);
-    $elements[] = drupal_render($form);
+    //$elements[] = drupal_render($form);
   }
 
-  return implode('', $elements);
+  return drupal_render($form);
+  //dpm($elements);
+  //return implode('', $elements);
 }
 
 /**
