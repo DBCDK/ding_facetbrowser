@@ -43,6 +43,7 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
   );
 
   $by_ajax = variable_get('ding_facetbrowser_by_ajax', FALSE);
+
   if($by_ajax){
     $block->content = drupal_render(ding_facetbrowser_facetbrowser_placeholder());
   }
@@ -73,28 +74,7 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
   return $block;
 }
 
-/** Get a placeholder to get facets by ajax
- * @return array
- */
-function ding_facetbrowser_facetbrowser_placeholder(){
-  $path = drupal_get_path('module','ding_facetbrowser');
-  $jspath = $path.'/js/facetbrowser.js';
-  $js[] = $jspath;
 
-
-  $form = array(
-    'placeholder' => array(
-      '#type' => 'container',
-      '#attributes' => array(
-        'class' => array('ding_facetbrowser_facets_placeholder'),
-      )
-    ),
-    '#attached' => array(
-      'js' => $js,
-    ),
-  );
-  return $form;
-}
 
 /**
  * Returns an edit form for settings
