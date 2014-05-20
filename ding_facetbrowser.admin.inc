@@ -105,6 +105,14 @@ function ding_facetbrowser_settings($form_state) {
     '#default_value' => variable_get('ding_facetbrowser_number_requested', 25),
   );
 
+  $form['ding_facetbrowser_by_ajax'] = array(
+    '#type' => 'checkbox',
+    '#weight' => -100,
+    '#title' => t('Facets by ajax'),
+    '#description' => t('Get facets by ajax or not'),
+    '#default_value' => variable_get('ding_facetbrowser_by_ajax', FALSE),
+  );
+
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array(
     '#type' => 'submit',
@@ -129,6 +137,9 @@ function ding_facetbrowser_settings_submit($form, &$form_state) {
 
   $number_of_facets = $form_state['values']['ding_facetbrowser_number_shown'];
   variable_set('ding_facetbrowser_number_shown', $number_of_facets);
+
+  $facets_by_ajax = $form_state['values']['ding_facetbrowser_by_ajax'];
+  variable_set('ding_facetbrowser_by_ajax', $facets_by_ajax);
 
   $consecutive_number_of_facets = $form_state['values']['ding_facetbrowser_consecutive_number_shown'];
   variable_set('ding_facetbrowser_consecutive_number_shown', $consecutive_number_of_facets);

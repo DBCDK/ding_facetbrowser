@@ -20,6 +20,9 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
     variable_set('search_active_modules', array('node' => 'node', 'ting_openformat' => 'ting_openformat'));
     variable_set('search_default_module', 'ting_openformat');
 
+    // set ajax checkbox to FALSE
+    variable_set('ding_facetbrowser_by_ajax',FALSE);
+
     // Set up some facets for testing.
     variable_set('ding_facetbrowser_facets', array(
         0 => array(
@@ -109,6 +112,26 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
     $this->assertText('!!facet.subject!!', 'Found the facet.subject fieldset in the facetbrowser');
     $this->assertFieldById('edit-subject-instrumental', 'instrumental', 'Found the \'instrumental\' facet in the facet.subject fieldset');
 
+    // check that facets_by ajax is set to FALSE
+    $by_ajax = variable_get('ding_facetbrowser_by_ajax');
+    $this->assertTrue($by_ajax===FALSE, 'facets by ajax set to FALSE');
+    $edit['ding_facetbrowser_by_ajax'] = TRUE;
+    $this->drupalPost('admin/config/ting_openformat/facets', $edit, 'Save changes');
+    $by_ajax = variable_get('ding_facetbrowser_by_ajax');
+    $this->assertTrue($by_ajax==TRUE, 'facets by ajax set to TRUE');
+
+    // redo search to check if facets are also present via ajax
+    $this->drupalGet('search/work/harry');
+    // Check if the facetbrowser has any content
+    $this->assertRaw('ding_facetbrowser_facets_placeholder','placeholder for ajax found');
+
+    // test that ajax call delivers expected result;
+    $this->drupalGet('ting_openformat/ajax/facets');
+    $this->assertRaw('ding-facetbrowser-form', 'Facetbrowser found with ajax');
+
+    // assert that checkbox is present on admin page
+    $this->drupalGet('admin/config/ting_openformat/facets');
+    $this->assertFieldByName('ding_facetbrowser_by_ajax',TRUE,'By ajax checkbox found on admin');
 
     // Check if ding_facetbrowser_number_shown can be set;
     $edit['ding_facetbrowser_number_shown'] = rand();
@@ -120,6 +143,8 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
         '@number' => $edit['ding_facetbrowser_number_shown']
       ))
     );
+
+
 
     // Check if ding_facetbrowser_consecutive_number_shown can be set;
     $edit['ding_facetbrowser_consecutive_number_shown'] = rand();
