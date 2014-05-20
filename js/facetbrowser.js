@@ -29,11 +29,14 @@
           Drupal.facetBrowserInit();
         }
         else{
-        $('.ding_facetbrowser_facets_placeholder', context).ready(function (e) {
-          var div = $('.ding_facetbrowser_facets_placeholder');
-          div.html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>')
-          Drupal.tingOpenformatGetFacets(div);
-        });
+          var element = $('#ding-facetbrowser-form');
+          if(element.length < 1){
+            $('.ding_facetbrowser_facets_placeholder', context).ready(function (e) {
+              var div = $('.ding_facetbrowser_facets_placeholder');
+              div.html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>')
+              Drupal.tingOpenformatGetFacets(div);
+            });
+          }
         }
       }
     };
