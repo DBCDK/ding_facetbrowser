@@ -25,6 +25,7 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
 
   $block->module = 'ding_facetbrowser';
   $block->delta  = 'ding_facetbrowser';
+  $block->title = t('Ding Facetbrowser', array(), array('context' => 'ding_facetbrowser block title'));
 
   $show_count = variable_get('ding_facetbrowser_number_shown', 5);
   $show_count_consecutive = variable_get('ding_facetbrowser_consecutive_number_shown', 10);
@@ -66,7 +67,6 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
           $block_content = theme('facetbrowser', array($results->facets, (!empty($results->searchkey) ? $results->searchkey : NULL)));
         }
       }
-      $block->title = t('Ding Facetbrowser', array(), array('context' => 'ding_facetbrowser block title'));
       $block->content = $block_content;
 
     }
