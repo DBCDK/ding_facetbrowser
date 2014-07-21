@@ -7,11 +7,138 @@
     else {
       $('.ding_facetbrowser_facets_placeholder').html(facets.markup);
       Drupal.facetBrowserInit();
+
+      var facetsObj = {
+        timestamp: Date.now(),
+        markup: facets.markup
+      };
+      Drupal.tingOpenformatSetSessionStorage(Drupal.settings.ting_openformat.search_key, facetsObj);
     }
   };
 
-  Drupal.tingOpenformatGetFacets = function(div) {
-    var request = $.ajax({
+  /**
+   * Used when setting facets with data from sessionStorage to avoid
+   * unnecessary update of the sessionStorage
+   */
+  Drupal.tingOpenformatGetFacetsFromSessionStorage = function(markup) {
+    $('.ding_facetbrowser_facets_placeholder').html(markup);
+    Drupal.facetBrowserInit();
+  };
+
+  /**
+   * Asks for facets based on the current search result. If the browser
+   * supports sessionStorage it will check for saved facets otherwise facets
+   * will be retrieved by AJAX.
+   */
+  Drupal.tingOpenformatGetFacets = function() {
+    if(Modernizr.sessionstorage && !Drupal.settings.ting_openformat.isAdmin) {
+      Drupal.tingOpenformatCheckSessionStorage();
+    }
+    else {
+      Drupal.tingOpenformatGetFacetsByAjax();
+    }
+  };
+
+  /**
+   * Returns facets stored in the sessionStorage. If none is found facets will
+   * be retrieved by AJAX.
+   *
+   * If the facets currently stored in the sessionStorage has an age of
+   * 24 hours or more, the stored facets will get deleted and new ones will
+   * be retrieved by AJAX.
+   */
+  Drupal.tingOpenformatCheckSessionStorage = function() {
+    var facetsObj = sessionStorage.getItem(Drupal.settings.ting_openformat.search_key);
+
+    facetsObj = JSON.parse(facetsObj);
+
+    if(!facetsObj || !facetsObj.markup || !facetsObj.timestamp) {
+      Drupal.tingOpenformatGetFacetsByAjax();
+    }
+    else {
+      var now = Date.now();
+      if(now - facetsObj.timestamp >= 86400000) {
+        Drupal.tingOpenformatGetFacetsByAjax();
+      }
+      else {
+        Drupal.tingOpenformatGetFacetsFromSessionStorage(facetsObj.markup);
+      }
+    }
+  };
+
+  /**
+   * Stores the given value object in the sessionStorage with the key
+   * parameter as key.
+   * If the browser doesn't support sessionStorage the operation will be
+   * aborted silently.
+   *
+   * @param value mixed
+   * @param key string
+   * @param retry bool idicating if the attempt so store is a retry after sessionStorage have been cleared
+   */
+  Drupal.tingOpenformatSetSessionStorage = function(key, value, retry) {
+    if(!Modernizr.sessionstorage) {
+      console.log("sessionStorage is not supported by this browser");
+      return;
+    }
+
+    try{
+      sessionStorage.setItem(key, JSON.stringify(value));
+      Drupal.tingOpenformatStoreSearchKey(key);
+    } catch(e){
+      if(!retry){
+        Drupal.tingOpenformatClearSessionStorageSearches();
+        Drupal.tingOpenformatSetSessionStorage(key, value, true);
+      }
+    }
+  };
+
+  /**
+   * Stores the key associated witn the current search ion the searches array
+   * that keeps track of the searces stored in the sessionStorage.
+   *
+   * @param key string
+   * @return {boolean}
+   */
+  Drupal.tingOpenformatStoreSearchKey = function(key){
+    var searches = sessionStorage.getItem('searches');
+    searches = JSON.parse(searches);
+    
+    if(!searches){
+      searches = [];
+    }
+    
+    if(searches.indexOf(key) == -1){
+      searches.push(key);
+      sessionStorage.setItem('searches', JSON.stringify(searches));
+    }
+  };
+
+  /**
+   * Clears out the seartches stored in sessionStorage.
+   *
+   * @return {boolean}
+   */
+  Drupal.tingOpenformatClearSessionStorageSearches = function(){
+    var searches = sessionStorage.getItem('searches');
+    searches = JSON.parse(searches);
+    
+    if(!searches){
+      searches = [];
+    }
+
+    searches.forEach(function(value){
+      sessionStorage.removeItem(value);
+    });
+
+    sessionStorage.setItem('searches', JSON.stringify([]));
+  };
+
+  /**
+   * Retrieves the facets from the server by AJAX.
+   */
+  Drupal.tingOpenformatGetFacetsByAjax = function() {
+    $.ajax({
       url: Drupal.settings.basePath + 'ting_openformat/ajax/facets',
       type: 'POST',
       dataType: 'json',
@@ -20,18 +147,18 @@
   };
 
   Drupal.behaviors.tingOpenformatLoad = {
-    attach: function(context) {
+    attach: function(context) { 
       var element = $('.ding_facetbrowser_facets_placeholder');
       if(element.length == 0) {
         Drupal.facetBrowserInit();
       }
       else {
-        var element = $('#ding-facetbrowser-form');
+        element = $('#ding-facetbrowser-form');
         if(element.length < 1) {
-          $('.ding_facetbrowser_facets_placeholder', context).ready(function(e) {
+          $('.ding_facetbrowser_facets_placeholder', context).ready(function() {
             var div = $('.ding_facetbrowser_facets_placeholder');
-            div.html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>')
-            Drupal.tingOpenformatGetFacets(div);
+            div.html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>');
+            Drupal.tingOpenformatGetFacets();
           });
         }
       }
