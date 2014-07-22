@@ -36,6 +36,12 @@
     }
     else {
       Drupal.tingOpenformatGetFacetsByAjax();
+      if(Drupal.settings.ting_openformat.isAdmin){
+        console.log("You are logged in as admin and to avoid caching of facets when changes are to facets, facets are retrieved by AJAX on every page request.");
+      }
+      if(!Modernizr.sessionstorage){
+        console.log("sessionStorage is not supoorted by this browser. Facets will be retrieved by AJAX on every page request.");
+      }
     }
   };
 
