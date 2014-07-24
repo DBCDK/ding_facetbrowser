@@ -36,10 +36,10 @@
     }
     else {
       Drupal.tingOpenformatGetFacetsByAjax();
-      if(Drupal.settings.ting_openformat.isAdmin){
+      if(Drupal.settings.ting_openformat.isAdmin) {
         console.log("You are logged in as admin and to avoid caching of facets when changes are to facets, facets are retrieved by AJAX on every page request.");
       }
-      if(!Modernizr.sessionstorage){
+      if(!Modernizr.sessionstorage) {
         console.log("sessionStorage is not supoorted by this browser. Facets will be retrieved by AJAX on every page request.");
       }
     }
@@ -88,11 +88,11 @@
       return;
     }
 
-    try{
+    try {
       sessionStorage.setItem(key, JSON.stringify(value));
       Drupal.tingOpenformatStoreSearchKey(key);
-    } catch(e){
-      if(!retry){
+    } catch(e) {
+      if(!retry) {
         Drupal.tingOpenformatClearSessionStorageSearches();
         Drupal.tingOpenformatSetSessionStorage(key, value, true);
       }
@@ -106,15 +106,15 @@
    * @param key string
    * @return {boolean}
    */
-  Drupal.tingOpenformatStoreSearchKey = function(key){
+  Drupal.tingOpenformatStoreSearchKey = function(key) {
     var searches = sessionStorage.getItem('searches');
     searches = JSON.parse(searches);
-    
-    if(!searches){
+
+    if(!searches) {
       searches = [];
     }
-    
-    if(searches.indexOf(key) == -1){
+
+    if(searches.indexOf(key) == -1) {
       searches.push(key);
       sessionStorage.setItem('searches', JSON.stringify(searches));
     }
@@ -125,15 +125,15 @@
    *
    * @return {boolean}
    */
-  Drupal.tingOpenformatClearSessionStorageSearches = function(){
+  Drupal.tingOpenformatClearSessionStorageSearches = function() {
     var searches = sessionStorage.getItem('searches');
     searches = JSON.parse(searches);
-    
-    if(!searches){
+
+    if(!searches) {
       searches = [];
     }
 
-    searches.forEach(function(value){
+    searches.forEach(function(value) {
       sessionStorage.removeItem(value);
     });
 
@@ -153,7 +153,7 @@
   };
 
   Drupal.behaviors.tingOpenformatLoad = {
-    attach: function(context) { 
+    attach: function(context) {
       var element = $('.ding_facetbrowser_facets_placeholder');
       if(element.length == 0) {
         Drupal.facetBrowserInit();
