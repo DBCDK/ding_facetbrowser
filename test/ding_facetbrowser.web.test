@@ -116,7 +116,7 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
     $by_ajax = variable_get('ding_facetbrowser_by_ajax');
     $this->assertTrue($by_ajax===FALSE, 'facets by ajax set to FALSE');
     $edit['ding_facetbrowser_by_ajax'] = TRUE;
-    $this->drupalPost('admin/config/ting_openformat/facets', $edit, 'Save changes');
+    $this->drupalPost('admin/config/ting/facets', $edit, 'Save changes');
     $by_ajax = variable_get('ding_facetbrowser_by_ajax');
     $this->assertTrue($by_ajax==TRUE, 'facets by ajax set to TRUE');
 
@@ -130,12 +130,12 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
     $this->assertRaw('ding-facetbrowser-form', 'Facetbrowser found with ajax');
 
     // assert that checkbox is present on admin page
-    $this->drupalGet('admin/config/ting_openformat/facets');
+    $this->drupalGet('admin/config/ting/facets');
     $this->assertFieldByName('ding_facetbrowser_by_ajax',TRUE,'By ajax checkbox found on admin');
 
     // Check if ding_facetbrowser_number_shown can be set;
     $edit['ding_facetbrowser_number_shown'] = rand();
-    $this->drupalPost('admin/config/ting_openformat/facets', $edit, 'Save changes');
+    $this->drupalPost('admin/config/ting/facets', $edit, 'Save changes');
     $this->assertFieldByName(
       'ding_facetbrowser_number_shown',
       $edit['ding_facetbrowser_number_shown'],
@@ -148,7 +148,7 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
 
     // Check if ding_facetbrowser_consecutive_number_shown can be set;
     $edit['ding_facetbrowser_consecutive_number_shown'] = rand();
-    $this->drupalPost('admin/config/ting_openformat/facets', $edit, 'Save changes');
+    $this->drupalPost('admin/config/ting/facets', $edit, 'Save changes');
     $this->assertFieldByName(
       'ding_facetbrowser_consecutive_number_shown',
       $edit['ding_facetbrowser_consecutive_number_shown'],
@@ -159,7 +159,7 @@ class DingFacetbrowserWeb extends DrupalWebTestCase {
 
     // Check if ding_facetbrowser_number_requested can be set;
     $edit['ding_facetbrowser_number_requested'] = rand();
-    $this->drupalPost('admin/config/ting_openformat/facets', $edit, 'Save changes');
+    $this->drupalPost('admin/config/ting/facets', $edit, 'Save changes');
     $this->assertFieldByName(
       'ding_facetbrowser_number_requested',
       $edit['ding_facetbrowser_number_requested'],
