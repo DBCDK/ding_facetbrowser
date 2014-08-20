@@ -12,9 +12,15 @@
         timestamp: Date.now(),
         markup: facets.markup
       };
-      Drupal.tingOpenformatSetSessionStorage(Drupal.settings.ting_openformat.search_key, facetsObj);
+      Drupal.tingOpenformatSetSessionStorage(facetsObj);
     }
   };
+
+  Drupal.tingOpenFormatGetStorageKey = function(){
+    var key = Drupal.settings.ting_openformat.search_key + Drupal.settings.pathPrefix;
+    return key;
+  }
+
 
   /**
    * Used when setting facets with data from sessionStorage to avoid
@@ -54,7 +60,9 @@
    * be retrieved by AJAX.
    */
   Drupal.tingOpenformatCheckSessionStorage = function() {
-    var facetsObj = sessionStorage.getItem(Drupal.settings.ting_openformat.search_key);
+    var key = Drupal.tingOpenFormatGetStorageKey();
+
+    var facetsObj = sessionStorage.getItem(key);
 
     facetsObj = JSON.parse(facetsObj);
 
@@ -82,7 +90,8 @@
    * @param key string
    * @param retry bool idicating if the attempt so store is a retry after sessionStorage have been cleared
    */
-  Drupal.tingOpenformatSetSessionStorage = function(key, value, retry) {
+  Drupal.tingOpenformatSetSessionStorage = function( value, retry) {
+    var key = Drupal.tingOpenFormatGetStorageKey();
     if(!Modernizr.sessionstorage) {
       console.log("sessionStorage is not supported by this browser");
       return;
@@ -94,7 +103,7 @@
     } catch(e) {
       if(!retry) {
         Drupal.tingOpenformatClearSessionStorageSearches();
-        Drupal.tingOpenformatSetSessionStorage(key, value, true);
+        Drupal.tingOpenformatSetSessionStorage( value, true);
       }
     }
   };
@@ -144,8 +153,9 @@
    * Retrieves the facets from the server by AJAX.
    */
   Drupal.tingOpenformatGetFacetsByAjax = function() {
+    var url =  Drupal.settings.basePath + Drupal.settings.pathPrefix + 'ting_openformat/ajax/facets';
     $.ajax({
-      url: Drupal.settings.basePath + 'ting_openformat/ajax/facets',
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'ting_openformat/ajax/facets',
       type: 'POST',
       dataType: 'json',
       success: Drupal.tingOpenformatSetFacets
