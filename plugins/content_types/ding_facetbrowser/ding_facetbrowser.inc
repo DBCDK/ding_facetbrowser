@@ -46,7 +46,8 @@ function ding_facetbrowser_content_type_render($subtype, $conf, $panel_args, $co
   $by_ajax = variable_get('ding_facetbrowser_by_ajax', FALSE);
 
   if($by_ajax){
-    $block->content = drupal_render(ding_facetbrowser_facetbrowser_placeholder());
+    $content = ding_facetbrowser_facetbrowser_placeholder();
+    $block->content = drupal_render($content);
   }
   else{
     // Invoke ding_facetbrowser() from executed search module
